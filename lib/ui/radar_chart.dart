@@ -38,7 +38,7 @@ class _RadarChartState extends State<RadarChart> {
   @override
   Widget build(BuildContext context) {
     return CustomPaint(
-      painter: _RadarChartCustomPaint(
+      painter: _RadarChartCustomPainter(
         bgColor: widget.bgColor,
         webLineWidth: widget.webLineWidth,
         webLineColor: widget.webLineColor,
@@ -56,10 +56,10 @@ class _RadarChartState extends State<RadarChart> {
   }
 }
 
-class _RadarChartCustomPaint extends CustomPainter {
+class _RadarChartCustomPainter extends CustomPainter {
   static const _offsetAngle = 90;
 
-  _RadarChartCustomPaint({
+  _RadarChartCustomPainter({
     required this.bgColor,
     required this.webLineWidth,
     required this.webLineColor,
@@ -130,11 +130,11 @@ class _RadarChartCustomPaint extends CustomPainter {
         final y2 = center.dy - thisRadius * sinDeg(endAngle);
 
         canvas.drawLine(
-            Offset(x1, y1),
-            Offset(x2, y2),
-            Paint()
-              ..strokeWidth = webLineWidth
-              ..color = webLineColor
+          Offset(x1, y1),
+          Offset(x2, y2),
+          Paint()
+            ..strokeWidth = webLineWidth
+            ..color = webLineColor
         );
       }
     }
@@ -147,11 +147,11 @@ class _RadarChartCustomPaint extends CustomPainter {
       final y1 = center.dy - radius * sinDeg(startAngle);
 
       canvas.drawLine(
-          Offset(x1, y1),
-          center,
-          Paint()
-            ..strokeWidth = webLineWidth
-            ..color = webLineColor
+        Offset(x1, y1),
+        center,
+        Paint()
+          ..strokeWidth = webLineWidth
+          ..color = webLineColor
       );
     }
   }
@@ -164,22 +164,22 @@ class _RadarChartCustomPaint extends CustomPainter {
 
       final textPainter = TextPainter()
         ..text = TextSpan(
-            text: xLabels![i],
-            style: TextStyle(
-                color: xLabelColor,
-                fontSize: xLabelSize
-            )
+          text: xLabels![i],
+          style: TextStyle(
+            color: xLabelColor,
+            fontSize: xLabelSize
+          )
         )
         ..textDirection = TextDirection.ltr
         ..textAlign = TextAlign.center
         ..layout();
 
       textPainter.paint(
-          canvas,
-          Offset(
-              x1 - textPainter.width / 2,
-              y1 - textPainter.height / 2
-          )
+        canvas,
+        Offset(
+          x1 - textPainter.width / 2,
+          y1 - textPainter.height / 2
+        )
       );
     }
   }
@@ -189,15 +189,15 @@ class _RadarChartCustomPaint extends CustomPainter {
       final x1 = center.dx + radius * cosDeg(_offsetAngle);
       for (var i = 0; i <= guideLineCount; i++) {
         final y1 = center.dy - radius / guideLineCount * (guideLineCount - i) *
-            sinDeg(_offsetAngle);
+          sinDeg(_offsetAngle);
         final textPainter = TextPainter()
           ..text = TextSpan(
-              text: (yMaximum / guideLineCount * (guideLineCount - i))
-                  .toString(),
-              style: TextStyle(
-                  color: yLabelColor,
-                  fontSize: yLabelSize
-              )
+            text: (yMaximum / guideLineCount * (guideLineCount - i))
+              .toString(),
+            style: TextStyle(
+              color: yLabelColor,
+              fontSize: yLabelSize
+            )
           )
           ..textDirection = TextDirection.ltr
           ..textAlign = TextAlign.center
@@ -206,8 +206,8 @@ class _RadarChartCustomPaint extends CustomPainter {
         textPainter.paint(
             canvas,
             Offset(
-                x1 - textPainter.width / 2,
-                y1 - textPainter.height / 2
+              x1 - textPainter.width / 2,
+              y1 - textPainter.height / 2
             )
         );
       }
@@ -232,18 +232,18 @@ class _RadarChartCustomPaint extends CustomPainter {
         final y2 = center.dy - (radius * v2 / yMaximum) * sinDeg(endAngle);
 
         canvas.drawLine(
-            Offset(x1, y1),
-            Offset(x2, y2),
-            Paint()
-              ..strokeWidth = entry.lineWidth
-              ..color = entry.color
+          Offset(x1, y1),
+          Offset(x2, y2),
+          Paint()
+            ..strokeWidth = entry.lineWidth
+            ..color = entry.color
         );
 
         canvas.drawCircle(
-            Offset(x1, y1),
-            markerSize,
-            Paint()
-              ..color = entry.color
+          Offset(x1, y1),
+          markerSize,
+          Paint()
+            ..color = entry.color
         );
 
         if (j == 0) {

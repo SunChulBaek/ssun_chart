@@ -1,29 +1,27 @@
 part of ssun_chart;
 
-class RadarData {
-  RadarData(
+class LineData {
+  LineData(
     this.dataSets
   );
 
-  final List<RadarDataSet> dataSets;
+  final List<LineDataSet> dataSets;
 }
 
-class RadarDataSet {
-  RadarDataSet({
+class LineDataSet {
+  LineDataSet({
     required this.color,
-    required this.fillColor,
     required this.lineWidth,
     required this.entries,
   });
 
   final Color color;
-  final Color fillColor;
   final double lineWidth;
-  final List<RadarEntry> entries;
+  final List<LineEntry> entries;
 }
 
-class RadarEntry {
-  RadarEntry(
+class LineEntry {
+  LineEntry(
     this.value,
   );
 
