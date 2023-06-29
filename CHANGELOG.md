@@ -6,3 +6,6 @@
 
 ## 0.0.3
 * Add Bar Chart
+
+## 0.0.4
+* Add Pie Chart
