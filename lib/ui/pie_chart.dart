@@ -59,26 +59,20 @@ class _PieChartCustomPainter extends CustomPainter {
         final total = entry.entries.fold(0.0, (prev, e) => prev + e.value);
         final startAngle = _offsetAngle + 360 / total * (j == 0 ? 0 : entry.entries.sublist(0, j).fold(0.0, (prev, e) => prev + e.value));
         final endAngle = _offsetAngle + 360 / total * entry.entries.sublist(0, j + 1).fold(0.0, (prev, e) => prev + e.value);
-        debugPrint("[sunchulbaek] startAngle = $startAngle, endAngle = $endAngle");
+
         fillPath.moveTo(center.dx, center.dy);
         fillPath.lineTo(
-            center.dx + radius * cosDeg(startAngle),
-            center.dy - radius * sinDeg(startAngle)
+          center.dx + radius * cosDeg(startAngle),
+          center.dy - radius * sinDeg(startAngle)
         );
         fillPath.arcTo(
-            Rect.fromCircle(center: center, radius: radius),
-            degToRad(startAngle).toDouble(),
-            degToRad(endAngle - startAngle).toDouble(),
-            true
+          Rect.fromCircle(center: center, radius: radius),
+          degToRad(startAngle).toDouble(),
+          degToRad(endAngle - startAngle).toDouble(),
+          true
         );
         fillPath.lineTo(center.dx, center.dy);
-        canvas.drawPath(fillPath, Paint()..color = [
-          Colors.red,
-          Colors.orange,
-          Colors.yellow,
-          Colors.green,
-          Colors.blue,
-        ][j]);
+        canvas.drawPath(fillPath, Paint()..color = data.dataSets[i].colors[j]);
       }
     }
     canvas.drawCircle(center, radius * 0.3, Paint()..color = Colors.white.withOpacity(0.3));

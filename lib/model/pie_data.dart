@@ -10,15 +10,17 @@ class PieData {
 
 class PieDataSet {
   PieDataSet({
+    required this.colors,
     required this.entries,
   });
 
+  final List<Color> colors;
   final List<PieEntry> entries;
 }
 
 class PieEntry {
   PieEntry(
-    this.value
+    this.value,
   );
 
   final double value;
