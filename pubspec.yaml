@@ -1,6 +1,6 @@
 name: ssun_chart
 description: Flutter Chart Library
-version: 0.0.4
+version: 0.0.5
 repository: https://github.com/SunChulBaek/ssun_chart
 
 environment:
@@ -8,6 +8,7 @@ environment:
   flutter: ">=1.17.0"
 
 dependencies:
+  intl: ^0.18.0
   flutter:
     sdk: flutter
 

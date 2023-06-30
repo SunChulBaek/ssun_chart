@@ -9,3 +9,6 @@
 
 ## 0.0.4
 * Add Pie Chart
+
+## 0.0.5
+* Add Pie Chart Detail
