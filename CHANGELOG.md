@@ -12,3 +12,6 @@
 
 ## 0.0.5
 * Add Pie Chart Detail
+
+## 0.0.6
+* Add Radar Chart Detail

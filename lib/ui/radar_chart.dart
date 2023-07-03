@@ -5,11 +5,13 @@ class RadarChart extends StatefulWidget {
     this.bgColor = Colors.black12,
     this.webLineWidth = 0.0,
     this.webLineColor = Colors.black,
-    this.markerSize = 2.0,
+    this.markerSize = 0.0,
+    this.xDrawLabels = false,
     this.xLabels,
     this.xLabelColor = Colors.black,
     this.xLabelSize = 10,
     this.yMaximum = 100.0,
+    this.yLabelCount = 6,
     this.yLabelColor = Colors.black,
     this.yLabelSize = 10,
     this.yDrawLabels = false,
@@ -21,10 +23,12 @@ class RadarChart extends StatefulWidget {
   final double webLineWidth;
   final Color webLineColor;
   final double markerSize;
+  final bool xDrawLabels;
   final List<String>? xLabels;
   final Color xLabelColor;
   final double xLabelSize;
   final double yMaximum;
+  final int yLabelCount;
   final Color yLabelColor;
   final double yLabelSize;
   final bool yDrawLabels;
@@ -43,10 +47,12 @@ class _RadarChartState extends State<RadarChart> {
         webLineWidth: widget.webLineWidth,
         webLineColor: widget.webLineColor,
         markerSize: widget.markerSize,
+        xDrawLabels: widget.xDrawLabels,
         xLabels: widget.xLabels,
         xLabelColor: widget.xLabelColor,
         xLabelSize: widget.xLabelSize,
         yMaximum: widget.yMaximum,
+        yLabelCount: widget.yLabelCount,
         yLabelColor: widget.yLabelColor,
         yLabelSize: widget.yLabelSize,
         yDrawLabels: widget.yDrawLabels,
@@ -64,10 +70,12 @@ class _RadarChartCustomPainter extends CustomPainter {
     required this.webLineWidth,
     required this.webLineColor,
     required this.markerSize,
+    required this.xDrawLabels,
     required this.xLabels,
     required this.xLabelColor,
     required this.xLabelSize,
     required this.yMaximum,
+    required this.yLabelCount,
     required this.yLabelColor,
     required this.yLabelSize,
     required this.yDrawLabels,
@@ -78,10 +86,12 @@ class _RadarChartCustomPainter extends CustomPainter {
   final double webLineWidth;
   final Color webLineColor;
   final double markerSize;
+  final bool xDrawLabels;
   final List<String>? xLabels;
   final Color xLabelColor;
   final double xLabelSize;
   final double yMaximum;
+  final int yLabelCount;
   final Color yLabelColor;
   final double yLabelSize;
   final bool yDrawLabels;
@@ -90,15 +100,14 @@ class _RadarChartCustomPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final center = Offset(size.width / 2, size.height / 2);
-    final radius = min(size.width, size.height) / 2;
+    final radius = min(size.width, size.height) / 2 - (xDrawLabels ? xLabelSize : 0);
     final axisCount = data.dataSets.isNotEmpty ? data.dataSets[0].entries.length : 0;
-    const guideLineCount = 5; // TODO
 
     canvas.clipRect(Rect.fromLTWH(0, 0, size.width, size.height));
     canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), Paint()..color = bgColor);
 
     // 가이드라인
-    drawGuideLines(canvas, guideLineCount, axisCount, radius, center);
+    drawGuideLines(canvas, axisCount, radius, center);
 
     // 축
     drawAxis(canvas, axisCount, radius, center);
@@ -107,19 +116,23 @@ class _RadarChartCustomPainter extends CustomPainter {
     drawData(canvas, axisCount, radius, center);
 
     // x축 라벨
-    drawXLabels(canvas, axisCount, radius, center);
+    if (xDrawLabels) {
+      drawXLabels(canvas, size, axisCount, radius + yLabelSize, center);
+    }
 
     // y축 라벨
-    drawYLabels(canvas, guideLineCount, axisCount, radius, center);
+    if (yDrawLabels) {
+      drawYLabels(canvas, size, axisCount, radius, center);
+    }
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 
-  void drawGuideLines(Canvas canvas, int guideLineCount, int axisCount, double radius, Offset center) {
-    for (var i = 1; i <= guideLineCount; i++) {
+  void drawGuideLines(Canvas canvas, int axisCount, double radius, Offset center) {
+    for (var i = 1; i <= yLabelCount; i++) {
       for (var j = 0; j < axisCount; j++) {
-        final thisRadius = radius * i / guideLineCount;
+        final thisRadius = radius * i / yLabelCount;
         final startAngle = _offsetAngle - 360 / axisCount * j;
         final endAngle = _offsetAngle - 360 / axisCount * (j + 1);
         // P1
@@ -156,7 +169,7 @@ class _RadarChartCustomPainter extends CustomPainter {
     }
   }
 
-  void drawXLabels(Canvas canvas, int axisCount, double radius, Offset center) {
+  void drawXLabels(Canvas canvas, Size size, int axisCount, double radius, Offset center) {
     for (var i = 0; i < (xLabels?.length ?? 0); i++) {
       final startAngle = _offsetAngle - 360 / axisCount * i;
       final x1 = center.dx + radius * cosDeg(startAngle);
@@ -176,41 +189,41 @@ class _RadarChartCustomPainter extends CustomPainter {
 
       textPainter.paint(
         canvas,
-        Offset(
-          x1 - textPainter.width / 2,
-          y1 - textPainter.height / 2
+        modifiedOffset(
+          size,
+          Offset(x1, y1),
+          textPainter.width,
+          textPainter.height
         )
       );
     }
   }
 
-  void drawYLabels(Canvas canvas, int guideLineCount, int axisCount, double radius, Offset center) {
-    if (yDrawLabels) {
-      final x1 = center.dx + radius * cosDeg(_offsetAngle);
-      for (var i = 0; i <= guideLineCount; i++) {
-        final y1 = center.dy - radius / guideLineCount * (guideLineCount - i) *
-          sinDeg(_offsetAngle);
-        final textPainter = TextPainter()
-          ..text = TextSpan(
-            text: (yMaximum / guideLineCount * (guideLineCount - i))
-              .toString(),
-            style: TextStyle(
-              color: yLabelColor,
-              fontSize: yLabelSize
-            )
-          )
-          ..textDirection = TextDirection.ltr
-          ..textAlign = TextAlign.center
-          ..layout();
+  void drawYLabels(Canvas canvas, Size size, int axisCount, double radius, Offset center) {
+    final x1 = center.dx + radius * cosDeg(_offsetAngle);
+    for (var i = 1; i <= yLabelCount; i++) {
+      final y1 = center.dy - radius / yLabelCount * (yLabelCount - i) *
+        sinDeg(_offsetAngle);
 
-        textPainter.paint(
-            canvas,
-            Offset(
-              x1 - textPainter.width / 2,
-              y1 - textPainter.height / 2
-            )
-        );
-      }
+      final textPainter = TextPainter()
+        ..text = TextSpan(
+          text: (yMaximum / yLabelCount * (yLabelCount - i)).toString(),
+          style: TextStyle(
+            color: yLabelColor,
+            fontSize: yLabelSize
+          )
+        )
+        ..textDirection = TextDirection.ltr
+        ..textAlign = TextAlign.center
+        ..layout();
+
+      textPainter.paint(
+        canvas,
+        Offset(
+          x1 + webLineWidth,
+          y1 - textPainter.height / 2
+        )
+      );
     }
   }
 
@@ -239,12 +252,14 @@ class _RadarChartCustomPainter extends CustomPainter {
             ..color = entry.color
         );
 
-        canvas.drawCircle(
-          Offset(x1, y1),
-          markerSize,
-          Paint()
-            ..color = entry.color
-        );
+        if (markerSize > 0.0) {
+          canvas.drawCircle(
+            Offset(x1, y1),
+            markerSize,
+            Paint()
+              ..color = entry.color
+          );
+        }
 
         if (j == 0) {
           fillPath.moveTo(x1, y1);
