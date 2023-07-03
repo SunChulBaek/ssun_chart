@@ -11,6 +11,7 @@ class RadarChart extends StatefulWidget {
     this.xLabelColor = Colors.black,
     this.xLabelSize = 10,
     this.yMaximum = 100.0,
+    this.yValueFormatter,
     this.yLabelCount = 6,
     this.yLabelColor = Colors.black,
     this.yLabelSize = 10,
@@ -28,6 +29,7 @@ class RadarChart extends StatefulWidget {
   final Color xLabelColor;
   final double xLabelSize;
   final double yMaximum;
+  final ValueFormatter? yValueFormatter;
   final int yLabelCount;
   final Color yLabelColor;
   final double yLabelSize;
@@ -52,6 +54,7 @@ class _RadarChartState extends State<RadarChart> {
         xLabelColor: widget.xLabelColor,
         xLabelSize: widget.xLabelSize,
         yMaximum: widget.yMaximum,
+        yValueFormatter: widget.yValueFormatter,
         yLabelCount: widget.yLabelCount,
         yLabelColor: widget.yLabelColor,
         yLabelSize: widget.yLabelSize,
@@ -75,6 +78,7 @@ class _RadarChartCustomPainter extends CustomPainter {
     required this.xLabelColor,
     required this.xLabelSize,
     required this.yMaximum,
+    required this.yValueFormatter,
     required this.yLabelCount,
     required this.yLabelColor,
     required this.yLabelSize,
@@ -91,6 +95,7 @@ class _RadarChartCustomPainter extends CustomPainter {
   final Color xLabelColor;
   final double xLabelSize;
   final double yMaximum;
+  final ValueFormatter? yValueFormatter;
   final int yLabelCount;
   final Color yLabelColor;
   final double yLabelSize;
@@ -207,7 +212,7 @@ class _RadarChartCustomPainter extends CustomPainter {
 
       final textPainter = TextPainter()
         ..text = TextSpan(
-          text: (yMaximum / yLabelCount * (yLabelCount - i)).toString(),
+          text: yValueFormatter != null ? yValueFormatter!.format(yMaximum / yLabelCount * (yLabelCount - i)) : (yMaximum / yLabelCount * (yLabelCount - i)).toString(),
           style: TextStyle(
             color: yLabelColor,
             fontSize: yLabelSize

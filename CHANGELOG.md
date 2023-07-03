@@ -15,3 +15,9 @@
 
 ## 0.0.6
 * Add Radar Chart Detail
+
+## 0.0.7
+* Line Chart, Bar Chart Y-Axis Label Detail
+
+## 0.0.8
+* Y-Axis Label Formatting
