@@ -30,7 +30,7 @@ jobs:
       - checkout
       - flutter/install_sdk_and_pub: # install_sdk (sdk 설치) + install_pub (pub get)
           version: 3.10.5
-      - flutter/install_android_gradle_dependencies
+      # - flutter/install_android_gradle_dependencies
       - dry-publish
       - slack_notify
   publish:
@@ -40,7 +40,7 @@ jobs:
       - checkout
       - flutter/install_sdk_and_pub: # install_sdk (sdk 설치) + install_pub (pub get)
           version: 3.10.5
-      - flutter/install_android_gradle_dependencies
+      # - flutter/install_android_gradle_dependencies
       - publish
       - slack_notify
 workflows:
