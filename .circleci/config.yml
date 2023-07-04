@@ -44,7 +44,7 @@ jobs:
       - publish
       - slack_notify
 workflows:
-  dry-publish: # trigger test
+  dry-publish:
     jobs:
       - dry-publish:
           filters:
