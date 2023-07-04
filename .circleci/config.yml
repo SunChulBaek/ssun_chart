@@ -50,7 +50,8 @@ workflows:
                 - develop
   publish:
     jobs:
-      - publish:
+      # - publish: # TODO : publish 인증을 할 수 없어 임시로 dry-publish로 대체
+      - dry-publish:
           filters:
             branches:
               only:
