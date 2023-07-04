@@ -21,3 +21,6 @@
 
 ## 0.0.8
 * Y-Axis Label Formatting
+
+## 0.0.9
+* Add README.md
