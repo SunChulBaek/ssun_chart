@@ -1,6 +1,5 @@
 version: 2.1
 orbs:
-  android: circleci/android@2.3.0 # https://circleci.com/developer/orbs/orb/circleci/android
   flutter: circleci/flutter@2.0.2 # https://circleci.com/developer/orbs/orb/circleci/flutter
   slack: circleci/slack@4.12.5 # https://circleci.com/developer/orbs/orb/circleci/slack
 commands:
@@ -21,7 +20,7 @@ commands:
     steps:
       - run:
           name: Publish
-          command: flutter pub publish
+          command: flutter pub publish --force
 jobs:
   dry-publish:
     docker:
@@ -30,7 +29,6 @@ jobs:
       - checkout
       - flutter/install_sdk_and_pub: # install_sdk (sdk 설치) + install_pub (pub get)
           version: 3.10.5
-      # - flutter/install_android_gradle_dependencies
       - dry-publish
       - slack_notify
   publish:
@@ -40,7 +38,6 @@ jobs:
       - checkout
       - flutter/install_sdk_and_pub: # install_sdk (sdk 설치) + install_pub (pub get)
           version: 3.10.5
-      # - flutter/install_android_gradle_dependencies
       - publish
       - slack_notify
 workflows:
