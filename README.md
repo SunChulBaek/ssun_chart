@@ -1,4 +1,6 @@
 # ssun_chart
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/SunChulBaek/FlutterChart/tree/main.svg?style=shield)](https://dl.circleci.com/status-badge/redirect/gh/SunChulBaek/FlutterChart/tree/main)
+
 Chart Library for Flutter.
 
 Sample app is available at [FlutterChart](https://github.com/SunChulBaek/FlutterChart).

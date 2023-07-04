@@ -24,3 +24,6 @@
 
 ## 0.0.9
 * Add README.md
+
+## 0.0.10
+* Add CircleCI configuration
