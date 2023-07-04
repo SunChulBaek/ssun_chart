@@ -20,7 +20,9 @@ jobs:
       - run: flutter --version
       - name: Install dependencies
         run: flutter pub get
-      # Here you can insert custom steps you need
-      # - run: dart tool/generate-code.dart
       - name: Publish
-        run: flutter pub publish --force
+        uses: k-paxian/dart-package-publisher@v1.5.1
+        with:
+          credentialJson: ${{ secrests.CREDENTIAL_SECRET }}
+          flutter: true
+          skipTests: true
