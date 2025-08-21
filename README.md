@@ -1,7 +1,7 @@
 # ssun_chart [![badge](https://img.shields.io/badge/pub-v0.0.10-blue.svg)](https://pub.dev/packages/ssun_chart)
 Chart Library for Flutter.
 
-Sample app is available at [FlutterChart](https://github.com/SunChulBaek/FlutterChart).
+Sample app is available at [FlutterChart](https://github.com/SunChulBaek/FlutterChart). ([Download APK](https://github.com/SunChulBaek/FlutterChartNew/releases/download/1.0.0/fchart-v1.0.0.apk))
 
 ## Examples
 ### Line Chart
